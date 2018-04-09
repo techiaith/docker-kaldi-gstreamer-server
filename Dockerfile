@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y  \
     python-gi \
     subversion \
     wget \
+    unzip \
     zlib1g-dev && \
     apt-get clean autoclean && \
     apt-get autoremove -y && \
@@ -41,7 +42,8 @@ RUN wget http://www.digip.org/jansson/releases/jansson-2.7.tar.bz2 && \
     echo "/usr/local/lib" >> /etc/ld.so.conf.d/jansson.conf && ldconfig && \
     rm /opt/jansson-2.7.tar.bz2 && rm -rf /opt/jansson-2.7
 
-RUN git clone https://github.com/kaldi-asr/kaldi && \
+RUN wget https://github.com/kaldi-asr/kaldi/archive/5.2.zip && \
+    unzip 5.2.zip && mv kaldi-5.2 kaldi && rm 5.2.zip && \	
     cd /opt/kaldi/tools && \
     make && \
     ./install_portaudio.sh && \
@@ -69,3 +71,4 @@ COPY start.sh stop.sh /opt/
 
 RUN chmod +x /opt/start.sh && \
     chmod +x /opt/stop.sh 
+
